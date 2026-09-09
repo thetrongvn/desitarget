@@ -4,7 +4,6 @@
 """
 import unittest
 from importlib import resources
-import shutil
 import os.path
 import tempfile
 from astropy.io import fits
@@ -23,11 +22,11 @@ class TestIO(unittest.TestCase):
         cls.datadir = str(resources.files('desitarget').joinpath('test/t'))
 
     def setUp(self):
-        self.testdir = tempfile.mkdtemp()
+        self._testdir_obj = tempfile.TemporaryDirectory()
+        self.testdir = self._testdir_obj.name
 
     def tearDown(self):
-        if os.path.exists(self.testdir):
-            shutil.rmtree(self.testdir, ignore_errors=True)
+        self._testdir_obj.cleanup()
 
     def test_list_tractorfiles(self):
         files = io.list_tractorfiles(self.datadir)
