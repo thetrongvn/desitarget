@@ -6,11 +6,12 @@ desitarget Change Log
 ------------------
 
 * Fix tests that wrote to the current directory instead of a tempdir,
-  so that tests pass on a read-only filesystem.
+  so that tests pass on a read-only filesystem [`PR #901`_].
 * Python 3.14 support: Update multiprocessing to use fork instead of
   forkserver [`PR #898`_].
 
 .. _`PR #898`: https://github.com/desihub/desitarget/pull/898
+.. _`PR #901`: https://github.com/desihub/desitarget/pull/901
 
 5.4.0 (2026-08-24)
 ------------------
