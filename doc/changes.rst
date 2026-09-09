@@ -5,6 +5,8 @@ desitarget Change Log
 5.4.1 (unreleased)
 ------------------
 
+* Fix tests that wrote to the current directory instead of a tempdir,
+  so that tests pass on a read-only filesystem.
 * Python 3.14 support: Update multiprocessing to use fork instead of
   forkserver [`PR #898`_].
 

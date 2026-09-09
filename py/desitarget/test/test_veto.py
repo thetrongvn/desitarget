@@ -7,7 +7,7 @@ import shutil
 import os
 import astropy
 from importlib import resources
-from uuid import uuid4
+import tempfile
 import numpy as np
 
 from desitarget import io
@@ -22,7 +22,7 @@ class TestVETO(unittest.TestCase):
 
     def setUp(self):
         # ADM make an entire copy of the test MTL directory structure.
-        self.testdir = "test-{}".format(uuid4().hex)
+        self.testdir = tempfile.mkdtemp()
         shutil.copytree(self.datadir, os.path.join(self.testdir, "main"))
         # ADM we need to remove the bad test file from the MTL mock
         # ADM directory, otherwise updates will fail on that file.

@@ -15,6 +15,7 @@ except ImportError:
     norr = True
 
 import os
+import tempfile
 import unittest
 import numpy as np
 from astropy.table import Table, join
@@ -332,10 +333,10 @@ class TestMTL(unittest.TestCase):
         t = self.update_data_model(t)
         zcat = self.update_data_model(self.zcat.copy())
         mtl = make_mtl(t, "BRIGHT", zcat=zcat, trim=True)
-        testfile = 'test-aszqweladfqwezceas.fits'
-        mtl.write(testfile, overwrite=True)
-        x = mtl.read(testfile)
-        os.remove(testfile)
+        with tempfile.TemporaryDirectory() as tmpdir:
+            testfile = os.path.join(tmpdir, 'test-aszqweladfqwezceas.fits')
+            mtl.write(testfile, overwrite=True)
+            x = mtl.read(testfile)
         if x.masked:
             self.assertTrue(np.all(
                 mtl['NUMOBS_MORE'].mask == x['NUMOBS_MORE'].mask))

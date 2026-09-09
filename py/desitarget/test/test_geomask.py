@@ -5,6 +5,8 @@
 import unittest
 import numpy as np
 import os
+import shutil
+import tempfile
 
 from desitarget import geomask
 
@@ -21,13 +23,22 @@ class TestGEOMASK(unittest.TestCase):
         """
         Test the bundle_bricks scripting code executes without bugs
         """
-        blat = geomask.bundle_bricks(1, 1, 1,
-                                     surveydirs=[self.surveydir])
-        self.assertTrue(blat is None)
+        # bundle_bricks writes a driver script to the current
+        # directory, so run it from a tempdir.
+        origdir = os.getcwd()
+        testdir = tempfile.mkdtemp()
+        try:
+            os.chdir(testdir)
+            blat = geomask.bundle_bricks(1, 1, 1,
+                                         surveydirs=[self.surveydir])
+            self.assertTrue(blat is None)
 
-        foo = geomask.bundle_bricks(1, 1, 1,
-                                    surveydirs=[self.surveydir, self.surveydir2])
-        self.assertTrue(foo is None)
+            foo = geomask.bundle_bricks(1, 1, 1,
+                                        surveydirs=[self.surveydir, self.surveydir2])
+            self.assertTrue(foo is None)
+        finally:
+            os.chdir(origdir)
+            shutil.rmtree(testdir, ignore_errors=True)
 
     def test_match(self):
         a = np.array([1, 2, 3, 4])

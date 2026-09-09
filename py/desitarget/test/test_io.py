@@ -6,7 +6,7 @@ import unittest
 from importlib import resources
 import shutil
 import os.path
-from uuid import uuid4
+import tempfile
 from astropy.io import fits
 import numpy as np
 import fitsio
@@ -23,7 +23,7 @@ class TestIO(unittest.TestCase):
         cls.datadir = str(resources.files('desitarget').joinpath('test/t'))
 
     def setUp(self):
-        self.testdir = 'test-{}'.format(uuid4().hex)
+        self.testdir = tempfile.mkdtemp()
 
     def tearDown(self):
         if os.path.exists(self.testdir):
